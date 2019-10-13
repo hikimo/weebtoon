@@ -5,6 +5,7 @@
 ## Weebtoon
 Weebtoon is a simple manga app, that let you enjoy to read when you are bored but won't to sleep and also because you're a weeb😆
 
+
 ## Screenshots
 
 <p float="left">
@@ -17,6 +18,9 @@ Weebtoon is a simple manga app, that let you enjoy to read when you are bored bu
   <img src="https://github.com/DumbWaysStudent/DW12NWN15_webtoon/blob/master/demo_ss/profile.png" width="200" alt="Profile"/>
 </p>
 
+## Warning
+This app is still in development, and also it's still a prototype,
+so this app still can't be used like it should.
 
 ## Features
 * Add to Favourite

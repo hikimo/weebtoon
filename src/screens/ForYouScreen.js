@@ -98,6 +98,7 @@ class ForYouScreen extends Component {
             <ScrollView
               horizontal={true}
               contentContainerStyle={styles.favContent}
+              showsHorizontalScrollIndicator={false}
             >
               {data.fav.map((item, index) => (
                 <TouchableOpacity key={index} onPress={() => this.props.navigation.navigate("Detail", {img: item.banner, title: item.title})} >
