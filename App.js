@@ -1,5 +1,9 @@
 import React, { Component } from "react"
 
+// Redux Provider
+import { Provider } from 'react-redux'
+import store from './src/_redux/store'
+
 // Navigator
 import AppNavigator from "./src/routes/AppNavigator";
 
@@ -25,7 +29,9 @@ class App extends Component {
     }
     
     return(
-      <AppNavigator />
+      <Provider store={store}>
+        <AppNavigator />
+      </Provider>
     )
   }
 

@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native"
 import colors from "../colors"
+import fonts from "../fonts"
 
 const styles = StyleSheet.create({
   container: {
@@ -22,13 +23,13 @@ const styles = StyleSheet.create({
     height: 150
   },
   loginCard: {
-    flex: 1,
     justifyContent: "space-around",
     backgroundColor: colors.white,
     paddingHorizontal: 20,
-    paddingVertical: 35,
+    paddingVertical: 20,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
+    minHeight: "50%",
     width: "100%",
     shadowColor: "#000",
     shadowOffset: {
@@ -43,7 +44,8 @@ const styles = StyleSheet.create({
   titleSub: {
     fontSize: 18,
     marginTop: 10,
-    color: colors.white
+    color: colors.white,
+    fontFamily: fonts.raleway.normal
   },
 
   form: {
@@ -62,7 +64,8 @@ const styles = StyleSheet.create({
   },
   lable: {
     fontSize: 16,
-    marginBottom: 8
+    marginBottom: 8,
+    fontFamily: fonts.quicksand.normal
   },
   inputBox: {
     borderBottomWidth: 1,
@@ -106,6 +109,32 @@ const styles = StyleSheet.create({
   },
   loginBtnDisabled: {
     backgroundColor: colors.primeDarken
+  },
+
+  registerBtn: {
+    alignItems: "center"
+  },
+  registerText: {
+    fontSize: 14,
+    color: colors.prime,
+    fontFamily: fonts.quicksand.bold
+  },
+
+  backBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    position: "absolute",
+    top: "2%",
+    left: "5%"
+  },
+  backIcon: {
+    color: colors.white,
+    marginRight: 15
+  },
+  backText: {
+    color: colors.white,
+    fontSize: 16,
+    fontFamily: fonts.quicksand.normal
   },
 
 

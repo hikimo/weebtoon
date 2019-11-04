@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native"
 import colors from "../colors"
 import fonts from "../fonts"
+import { hidden } from "colorette"
 
 export default styles = StyleSheet.create({
   container: {
@@ -42,33 +43,9 @@ export default styles = StyleSheet.create({
   caroselItem: {
     position: "relative"
   },
-  carouselImgFilter: {
-    position: "absolute", 
-    width: "100%", 
-    height: "100%", 
-    backgroundColor: "#00000022", 
-    alignItems: "center", 
-    justifyContent: "flex-end"
-  },
-  caroselTitle: {
-    color: colors.white,
-    fontFamily: fonts.raleway.semiBold,
-    letterSpacing: 2,
-    fontSize: 28,
-    marginBottom: "10%",
-    textTransform: "uppercase",
-    textShadowColor: "#000",
-    textShadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    textShadowRadius: 1.41,
-    elevation: 2,
-  },
-
   favBox: {
     marginTop: 10,
-    paddingLeft: 20
+    // paddingLeft: 20
   },
   boxTitle: {
     fontFamily: fonts.quicksand.normal,
@@ -77,16 +54,18 @@ export default styles = StyleSheet.create({
     color: colors.black
   },
   favContent: {
-    height: 210,
+    // height: 210,
     paddingHorizontal: 0,
     paddingVertical: 10,
     marginHorizontal: 0
   },
   favList: {
+    maxWidth: 125,
     alignItems: "center",
-    marginRight: 15,
+    marginHorizontal: 5,
     paddingBottom: 5,
     borderRadius: 4,
+    overflow: "hidden",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -98,49 +77,83 @@ export default styles = StyleSheet.create({
     elevation: 1,
   },
   favImg: {
-    height: 150,
+    height: 180,
     width: 125,
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4
   },
+  favDesc: {
+    paddingHorizontal: 5,
+    paddingVertical: 5
+  },
+  favTitleBox: {
+    overflow: "hidden",
+    marginBottom: 10
+  },
+  favLoved: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
+  },
   favTitle: {
-    fontSize: 16,
-    fontFamily: fonts.raleway.normal,
-    marginTop: 10,
+    fontSize: 14,
+    marginBottom: 5,
+    textAlign: "center",
+    fontFamily: fonts.quicksand.semiBold,
+    textTransform: "capitalize",
     color: colors.black
+  },
+  favCount: {
+    fontFamily: fonts.quicksand.normal,
+    fontSize: 14,
+    marginLeft: 5
   },
 
   allContentBox: {
     paddingHorizontal: 20,
   },
   contentList: {
-    marginVertical: 5,
+    marginVertical: 10,
+    // backgroundColor: colors.silver,
     flexDirection: "row"
   },
   contentImg: {
-    width: 85,
+    flex: 1,
+    maxWidth: 85,
     height: 125,
     borderRadius: 5,
     borderWidth: 2,
-    borderColor: colors.gray
+    borderColor: colors.silver,
+    overflow: "hidden"
   },
   contentDesc: {
+    flex: 1,
     justifyContent: "flex-start",
     marginLeft: 10
   },
   contentTitle: {
+    flex: 1,
     fontFamily: fonts.quicksand.semiBold,
-    marginBottom: 10,
+    marginBottom: 5,
     fontSize: 18,
+    textTransform: "capitalize",
+  },
+  contentSub: {
+    flex: 1,
+    fontFamily: fonts.quicksand.normal,
+    marginBottom: 10,
+    fontSize: 12,
   },
   contentBtn: {
+    flex: 1,
     backgroundColor: colors.primeDarken,
     paddingHorizontal: 15,
     paddingVertical: 10,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     borderRadius: 5,
-    width: 150,
+    maxHeight: 35
   },
   contentBtnText: {
     fontSize: 18,

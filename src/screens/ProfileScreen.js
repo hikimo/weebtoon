@@ -1,44 +1,113 @@
 import React, { Component } from "react"
-import { View, TouchableOpacity, Image, Text } from "react-native"
-import Fa from "react-native-vector-icons/FontAwesome5"
+import { View, TouchableOpacity, TouchableWithoutFeedback, Image, Text } from "react-native"
+import Fa5 from "react-native-vector-icons/FontAwesome5"
+import Fa from "react-native-vector-icons/FontAwesome"
 import styles from "../assets/styles/profileScreenStyles"
 import colors from "../assets/colors"
+import { connect } from "react-redux"
+
+import { logout } from "../_actions/user"
 
 class ProfileScreen extends Component {
   static navigationOptions = ({navigation}) => ({
+    headerStyle: {
+      backgroundColor: colors.prime,
+      elevation: 0,
+      shadowOpacity: 0,
+      borderBottomWidth: 0,
+    },
     headerRight: (
       <TouchableOpacity onPress={() => navigation.navigate("EditProfile")}>
-        <Fa name="pencil-alt" size={18} color={colors.white} />
+        <Fa5 name="pencil-alt" size={18} color={colors.white} />
       </TouchableOpacity>
     )
   })
-  
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.profileTop}>
           <View style={styles.imgFrame}>
-            <Image style={styles.imgProfile} resizeMode="cover" source={{uri: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d9b1f8f1-a3ec-432d-8e5e-91793bd37cc4/dcf7g8s-654d8a71-547a-4337-904f-7e73bdfe1b85.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2Q5YjFmOGYxLWEzZWMtNDMyZC04ZTVlLTkxNzkzYmQzN2NjNFwvZGNmN2c4cy02NTRkOGE3MS01NDdhLTQzMzctOTA0Zi03ZTczYmRmZTFiODUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.LysuaIEvv3cWHbj-Ase46NR55Wjfs_Xphta4RjNuSSw"}} />
+            {((this.props.user.isLogin === true) && (this.props.user.data.photo != '')) ? (
+              <Image style={styles.imgProfile} resizeMode="cover" source={{uri: this.props.user.data.photo}} />
+            ) : (
+              <Image style={styles.imgProfile} resizeMode="cover" source={require('../assets/images/ava.jpeg')} />
+            )}
           </View>
-          <Text style={styles.nameTitle}>Your Name</Text>
+          <View>
+            <Text style={styles.nameTitle}>
+              {((this.props.user.isLogin === true) && (this.props.user.data.name != '')) ? 
+              this.props.user.data.name : 'Your Name'}
+            </Text>
+            <View>
+              {this.props.user.isLogin === false ? (
+                <TouchableOpacity style={styles.actionBtn} onPress={() => this.props.navigation.navigate('Auth')}>
+                  <Text style={styles.actionBtnText}>Login</Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity style={styles.actionBtn} onPress={this._handleLogout}>
+                  <Text style={styles.actionBtnText}>Logout</Text>
+                </TouchableOpacity>
+              )} 
+            </View>
+          </View>
         </View>
 
         <View style={styles.actionBars}>
-          <TouchableOpacity style={[styles.actionPanel, {borderBottomWidth: .5}]} onPress={() => this.props.navigation.navigate("MyWeebtoon")}>
-            <View style={styles.actionBtn}>
-              <Text style={styles.actionText}>My Webtoon Creation</Text>
-              <Fa name="chevron-right" size={22} />
+          <Text style={styles.actionTitle}>Settings</Text>
+          <View style={styles.actionList}>
+            <View style={styles.row}>
+              <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('EditProfile')}>
+                <View style={[styles.list, {marginLeft: 0}]}>
+                  <Fa name="cogs" size={35} color={colors.prime} />
+                  <Text style={styles.listText}>Profile</Text>
+                </View>
+              </TouchableWithoutFeedback>
+              
+              <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Favorite')}>
+                <View style={styles.list}>
+                  <Fa name="heart" size={35} color={colors.prime} />
+                  <Text style={styles.listText}>My Favorites</Text>
+                </View>
+              </TouchableWithoutFeedback>
+
+              <TouchableWithoutFeedback>
+                <View style={[styles.list, {marginRight: 0}]}>
+                  <Fa name="bell-o" size={35} color={colors.prime} />
+                  <Text style={styles.listText}>Notification</Text>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate("Auth")} style={[styles.actionPanel, {borderTopWidth: .5}]}>
-            <View style={styles.actionBtn}>
-              <Text style={styles.actionText}>Log Out</Text>
-            </View>
-          </TouchableOpacity>
+          </View>
+          <View style={styles.row}>
+              {this.props.user.isLogin === true && (
+                <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate("MyWeebtoon")}>
+                  <View style={[styles.list, {marginLeft: 0, marginRight: 10}]}>
+                    <Fa name="folder" size={35} color={colors.prime} />
+                    <Text style={styles.listText}>My Weebtoon</Text>
+                  </View>
+                </TouchableWithoutFeedback>
+              )}
+              <TouchableWithoutFeedback>
+                <View style={[styles.list, {marginLeft: 0}]}>
+                  <Fa name="info-circle" size={35} color={colors.prime} />
+                  <Text style={styles.listText}>About</Text>
+                </View>
+              </TouchableWithoutFeedback>
+          </View>
         </View>
       </View>
     )
   }
+
+  _handleLogout = () => {
+    this.props.dispatch(logout())
+    this.props.navigation.navigate('ForYou')
+  }
 }
 
-export default ProfileScreen
+const mapStateToProps = (state) => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps)(ProfileScreen)

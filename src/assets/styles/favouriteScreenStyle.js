@@ -35,6 +35,20 @@ export default styles = StyleSheet.create({
     paddingHorizontal: 20
   },
 
+  noLogin: {
+    flex: 1,
+    paddingHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  noLoginImg: {
+    height: 200
+  },
+  noLoginText: {
+    fontSize: 22,
+    textAlign: "center",
+    fontFamily: fonts.raleway.normal
+  },
   listContainer: {
     paddingHorizontal: 10,
     paddingVertical: 25,
@@ -42,11 +56,12 @@ export default styles = StyleSheet.create({
   },
   listChapter: {
     flexDirection: "row",
+    alignItems: "center",
     marginVertical: 10
   },
   coverFrame: {
     borderWidth: 3,
-    borderColor: colors.gray,
+    borderColor: colors.silver,
     borderRadius: 10,
     overflow: "hidden",
     shadowColor: "#000",
@@ -58,22 +73,44 @@ export default styles = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
 
-    elevation: 4,
+    elevation: 2,
   },
   listCover: {
-    width: 75,
-    height: 75
+    width: 100,
+    height: 125
   },
   descBox: {
     marginLeft: 10,
-    justifyContent: "space-evenly"
+    paddingHorizontal: 10,
+    justifyContent: "space-around"
   },
   favTitle: {
+    flex: 1,
     fontFamily: fonts.quicksand.semiBold,
-    fontSize: 18
+    fontSize: 18,
+    width: 200,
+    maxWidth: 200
   },
   favCount: {
-    color: colors.gray,
+    flex: 1,
+    color: colors.silver,
     fontSize: 14
+  },
+  btnUnfav: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: colors.primeDarken,
+    paddingHorizontal: 5,
+    borderRadius: 4,
+    alignItems: "center",
+    justifyContent: "center",
+    height: 25,
+    maxHeight: 35,
+  },
+  btnUnfavText: {
+    fontFamily: fonts.quicksand.normal,
+    fontSize: 18,
+    marginLeft: 10,
+    color: colors.white
   }
 })

@@ -3,18 +3,20 @@ import { ActivityIndicator, View, Text, Image, TextInput, TouchableOpacity, Stat
 import Fa from "react-native-vector-icons/FontAwesome5"
 import colors from "../assets/colors"
 import styles from "../assets/styles/loginScreenStyle"
-import axios from "axios"
 import { connect } from "react-redux"
+import axios from "axios"
+import AsyncStorage from "@react-native-community/async-storage"
 import config from "../configs/config"
 
-import { getUser } from '../_actions/user'
+import { getUser } from "../_actions/user"
 
-class LoginScreen extends Component {
+class RegisterScreen extends Component {
   constructor() {
     super()
     this.state = {
       iMail: "",
       iPass: "",
+      iName: "",
       isEmail: {
         status: false,
         err: ""
@@ -34,23 +36,37 @@ class LoginScreen extends Component {
     return(
       <View style={styles.container}>
         <StatusBar backgroundColor={colors.prime} barStyle="light-content" />
-        
-        <TouchableOpacity style={styles.backBtn} onPress={() => this.props.navigation.navigate('ForYou')}>
-          <Fa name="arrow-left" style={styles.backIcon} size={22}/>
-          <Text style={styles.backText}>Back to manga</Text>
-        </TouchableOpacity>
 
         <View style={styles.title}>
           <Image 
             style={styles.logo}
             source={require("../assets/images/logo.png")}
           />
-          <Text style={styles.titleSub}>Login with your WEEBTOON</Text>
+          <Text style={styles.titleSub}>Be weebtoon family by registering</Text>
         </View>
 
         <View style={styles.loginCard}>
 
           <View style={styles.form}>
+          <View style={styles.formGroup}>
+              <View style={styles.inputBox}>
+                <Fa name="user" style={styles.icon} size={22} color={isEmail.status ? colors.white : colors.black} /> 
+                <TextInput 
+                  style={styles.input} 
+                  onChangeText={val => this.setState({iName: val})}
+                  editable={!this.state.isLoading}
+                  placeholder="Your name.."
+                  placeholderTextColor={colors.gray} 
+                  autoCapitalize="none"
+                />
+              </View>
+              { 
+                isEmail.status && (
+                  <Text style={styles.errText}>{isEmail.err}</Text>
+                ) 
+              }
+            </View>
+
             <View style={styles.formGroup}>
               <View style={[styles.inputBox, isEmail.status && styles.inputBoxErr]}>
                 <Fa name="envelope" style={styles.icon} size={22} color={isEmail.status ? colors.white : colors.black} /> 
@@ -104,39 +120,35 @@ class LoginScreen extends Component {
           ) : (
             <TouchableOpacity 
               style={[styles.loginBtn, this.state.btnDisabled  && (styles.loginBtnDisabled)]} 
-              onPress={this._handleLogin} 
+              onPress={this._handleRegister} 
               disabled={this.state.btnDisabled}
             >
-              <Text style={styles.loginBtnText}>Log In</Text>
+              <Text style={styles.loginBtnText}>Register</Text>
             </TouchableOpacity>
           )}
-
-          <TouchableOpacity style={styles.registerBtn} onPress={() => this.props.navigation.navigate('Register')}>
-            <Text style={styles.registerText}>Don't have an account? click here</Text>
-          </TouchableOpacity>
         </View>
       </View>
     )
     
   }
 
-  _handleLogin = async () => {
-    const { iMail, iPass } = this.state
+  _handleRegister = async () => {
+    const { iName, iMail, iPass } = this.state
 
     this.setState({isLoading: true})
 
     try{
-      await axios.post(config.host.concat('login'), {email: iMail, password: iPass})
+      await axios.post(config.host.concat('register'), {name: iName, email: iMail, password: iPass})
       .then((response) => {
         if (typeof response.data.token !== 'undefined'){
           if(response.data.error) {
-            alert('Email/Password is wrong')
+            alert('Email already taken')
           } else {
             this.props.dispatch(getUser(response.data))
             this.props.navigation.navigate('ForYou')
           }
         }else{
-          alert('Email/Password is wrong')
+          alert('Email already taken')
         }
       })
       .catch((error)=>{
@@ -154,6 +166,11 @@ class LoginScreen extends Component {
     this.setState({
       showPassword: !this.state.showPassword
     })
+  }
+
+  setItem = async () => {
+    await AsyncStorage.setItem('userToken', this.state.token)
+    await AsyncStorage.setItem('userID',JSON.stringify(this.state.userID))
   }
 
   _validateEmail = val => {
@@ -196,8 +213,8 @@ class LoginScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   user: state.user
 })
 
-export default connect(mapStateToProps)(LoginScreen)
+export default connect(mapStateToProps)(RegisterScreen)

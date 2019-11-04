@@ -1,43 +1,26 @@
 import React, { Component } from "react"
-import { View, Image, Text, TouchableOpacity, Dimensions, Share } from "react-native"
+import { ActivityIndicator, View, Image, Text, TouchableOpacity, Dimensions, Share } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import Fa from "react-native-vector-icons/FontAwesome5"
+import { connect } from "react-redux"
 
 import styles from "../assets/styles/chapterScreenStyle"
 import colors from "../assets/colors"
+import { getDetail, resetDetailChapter } from "../_actions/detail"
 
 const width = Dimensions.get("window").width
-
-const data = [
-  {
-    id: "MG010101RW",
-    img: "https://s5.mkklcdnv5.com/mangakakalot/g2/goblin_slayer/chapter_4/1.jpg"
-  },
-  {
-    id: "MG010102RW",
-    img: "https://1.bp.blogspot.com/-d6Fyv21ijYs/Wh7OhSi02gI/AAAAAAAEOuI/T90mpRPBRs0LsHiIFbwiWZ0Kly5HUBdAgCHMYCw/s0/001.jpg"
-  },
-  {
-    id: "MG010103RW",
-    img: "https://1.bp.blogspot.com/-QM9Hbx-SyrA/Wh7OiGbPAZI/AAAAAAAEOuM/OasPDT1BaEY_ZhktIchRpCh56HJDGbDcgCHMYCw/s0/002.jpg"
-  },
-  {
-    id: "MG010104RW",
-    img: "https://1.bp.blogspot.com/-yq5PJveQaJc/Wh7OjALJutI/AAAAAAAEOuU/s5Bl9soVlOEo3WPpqaSDxc1SlQ1zV1UtQCHMYCw/s0/004.jpg"
-  },
-  {
-    id: "MG010105RW",
-    img: "https://1.bp.blogspot.com/-CuNL_fPE7Y0/Wh7On07X8PI/AAAAAAAEOu0/kLdWrrATWLgdf1ItQz82ybMnziYYD0NlwCHMYCw/s0/012.jpg"
-  },
-]
 
 class ChapterScreen extends Component {
   constructor() {
     super()
+    this.state = {
+      data: []
+    }
   }
 
   static navigationOptions = ({ navigation }) => ({
-    title: "Chapter " + navigation.getParam("chapter", "0"),
+    title: navigation.getParam("chapter", "0"),
+    
     headerRight: (
       <TouchableOpacity onPress={() => Share.share({message: "Let's checkout this cool manga on WeebToon!", title: "https://hikimo.github.io"})}>
         <Fa name="share-alt" size={18} color={colors.white} />
@@ -50,7 +33,7 @@ class ChapterScreen extends Component {
         <Image 
           key={itm.item.id}
           source={{uri: itm.item.img}} 
-          style={{ width: width, height: 500 }}
+          style={{ width: width, height: Dimensions.get("window").height - 70 }}
           resizeMode="cover"
         />      
     )
@@ -59,16 +42,40 @@ class ChapterScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <FlatList 
-          data={data}
-          contentContainerStyle={styles.listContainer}
-          renderItem={itm => this.renderChapter({itm})}
-          keyExtractor={itm => itm.id}
-        />
+        {this.props.detail.isLoading === true ? (
+          <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+            <ActivityIndicator size="large" color={colors.prime} />
+          </View>
+        ) : (
+          <FlatList 
+            data={this.props.detail.data}
+            contentContainerStyle={styles.listContainer}
+            renderItem={itm => this.renderChapter({itm})}
+            keyExtractor={itm => itm.id}
+          />
+        )}
       </View>
     )
   }
+
+  async componentDidMount() {
+    await this.getChapterDetail()
+  }
+
+  async componentWillUnmount() {
+    await this.props.dispatch(resetDetailChapter())
+  }
+
+  async getChapterDetail() {
+    try{
+      this.props.dispatch(getDetail(this.props.navigation.getParam('mangaId', '1'), this.props.navigation.getParam('chapterId', '1')))
+    }catch(err) {
+      console.log(err)
+    }
+  }
 }
 
-
-export default ChapterScreen
+const mapStateToProps = state => ({
+  detail: state.detail
+})
+export default connect(mapStateToProps)(ChapterScreen)

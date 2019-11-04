@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   bannerBox: {
     width: "100%",
     overflow: "hidden",
-    borderBottomColor: colors.prime,
+    backgroundColor: colors.white,
     shadowColor: "#000",
     shadowColor: "#000",
     shadowOffset: {
@@ -32,9 +32,12 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   coverFrame: {
-    borderWidth: 3,
-    borderColor: colors.gray,
     borderRadius: 10,
+    width: 76,
+    height: 76,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.white,
     overflow: "hidden",
     shadowColor: "#000",
     shadowColor: "#000",
@@ -49,7 +52,8 @@ const styles = StyleSheet.create({
   },
   listCover: {
     width: 75,
-    height: 75
+    height: 75,
+    borderRadius: 10,
   },
   descBox: {
     marginLeft: 10,

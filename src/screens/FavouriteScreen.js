@@ -1,47 +1,36 @@
 import React, { Component } from "react"
-import { View, TextInput, TouchableWithoutFeedback, Image, Text, FlatList, TouchableOpacity } from "react-native"
+import { ActivityIndicator, View, TextInput, TouchableWithoutFeedback, Image, Text, FlatList, TouchableOpacity } from "react-native"
 import Fa from "react-native-vector-icons/FontAwesome5"
+import { connect } from "react-redux"
+import { getFavorite } from "../_actions/favorite";
 
 import colors from "../assets/colors"
 import styles from "../assets/styles/favouriteScreenStyle"
 
-const data = [
-    {
-      id: "FV01",
-      title: "Overlord",
-      banner: "https://images3.alphacoders.com/667/667877.jpg",
-      favImg: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d9b1f8f1-a3ec-432d-8e5e-91793bd37cc4/dakrfjg-90b93f1b-3e5e-4763-9e7e-f7b3bb63a397.jpg/v1/fill/w_911,h_878,q_70,strp/goblin_slayer_avatar_2_by_shadowskyexe_dakrfjg-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTg3IiwicGF0aCI6IlwvZlwvZDliMWY4ZjEtYTNlYy00MzJkLThlNWUtOTE3OTNiZDM3Y2M0XC9kYWtyZmpnLTkwYjkzZjFiLTNlNWUtNDc2My05ZTdlLWY3YjNiYjYzYTM5Ny5qcGciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.BoC8klMcCPHqaZatT7mVnvykidrNKnxwvUSG80nsrp4",
-      favCount: "100+"
-    }, {
-      id: "FV02",
-      title: "Goblin Slayer",
-      banner: "https://boundingintocomics.com/files/2019/09/2019.09.09-03.50-boundingintocomics-5d7674c2cdd18.png",
-      favImg: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d9b1f8f1-a3ec-432d-8e5e-91793bd37cc4/dakrfjg-90b93f1b-3e5e-4763-9e7e-f7b3bb63a397.jpg/v1/fill/w_911,h_878,q_70,strp/goblin_slayer_avatar_2_by_shadowskyexe_dakrfjg-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTg3IiwicGF0aCI6IlwvZlwvZDliMWY4ZjEtYTNlYy00MzJkLThlNWUtOTE3OTNiZDM3Y2M0XC9kYWtyZmpnLTkwYjkzZjFiLTNlNWUtNDc2My05ZTdlLWY3YjNiYjYzYTM5Ny5qcGciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.BoC8klMcCPHqaZatT7mVnvykidrNKnxwvUSG80nsrp4",
-      favCount: "100+"
-    }, {
-      id: "FV03",
-      title: "Uchi no ko",
-      banner: "https://animekaizoku.com/wp-content/uploads/2019/07/19042310403576.jpg.webp",
-      favImg: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d9b1f8f1-a3ec-432d-8e5e-91793bd37cc4/dakrfjg-90b93f1b-3e5e-4763-9e7e-f7b3bb63a397.jpg/v1/fill/w_911,h_878,q_70,strp/goblin_slayer_avatar_2_by_shadowskyexe_dakrfjg-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9OTg3IiwicGF0aCI6IlwvZlwvZDliMWY4ZjEtYTNlYy00MzJkLThlNWUtOTE3OTNiZDM3Y2M0XC9kYWtyZmpnLTkwYjkzZjFiLTNlNWUtNDc2My05ZTdlLWY3YjNiYjYzYTM5Ny5qcGciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.BoC8klMcCPHqaZatT7mVnvykidrNKnxwvUSG80nsrp4",
-      favCount: "95"
-    }
-  ]
-
-
 class FavouriteScreen extends Component {
+  componentDidMount() {
+    this.getFavorites()
+  }
 
   renderFav = ({itm}) => (
-    <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate("Detail", {title: itm.item.title, img: itm.item.banner})}>
+    <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate("Detail", {title: itm.item.name, img: itm.item.banner, mangaId: itm.item.id})}>
       <View key={itm.id} style={styles.listChapter}>
         <View style={styles.coverFrame}>
           <Image 
-            source={{uri: itm.item.favImg}} 
+            source={{uri: itm.item.cover}} 
             style={styles.listCover}
+            resizeMode="cover"
           />
         </View>
         <View style={styles.descBox}>
-          <Text style={styles.favTitle}>{itm.item.title}</Text>
-          <Text style={styles.favCount}>{itm.item.favCount} Favourite</Text>
+          <Text style={styles.favTitle}>
+          {(itm.item.name).length > 25 ? (((itm.item.name).substring(0,25-3)) + '...') : itm.item.name}
+          </Text>
+          <Text style={styles.favCount}>{itm.item.favorites} Favourite(s)</Text>
+          <TouchableOpacity style={styles.btnUnfav}>
+            <Fa name="heart-broken" size={18} color={colors.white} />
+            <Text style={styles.btnUnfavText}>Unfavorite</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -59,15 +48,50 @@ class FavouriteScreen extends Component {
           </View>
         </View>
 
-        <FlatList 
-          data={data}
-          contentContainerStyle={styles.listContainer}
-          renderItem={itm => this.renderFav({itm})}
-          keyExtractor={itm => itm.id}
-        />
+        {this.props.user.isLogin === false ? (
+            <View style={styles.noLogin}>
+              <Image source={require('../assets/images/sad_satania.png')} resizeMode="contain" style={styles.noLoginImg} />
+              <Text style={styles.noLoginText}>Login to see your list(s) of favorite manga</Text>
+            </View>
+          ) : (this.props.favorite.isLoading === true ? 
+          (
+            <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
+              <ActivityIndicator size="large" color={colors.prime} />
+            </View>
+          ) : 
+          (this.props.favorite.data.length > 0) ? 
+          (
+            <FlatList 
+              data={this.props.favorite.data}
+              contentContainerStyle={styles.listContainer}
+              renderItem={itm => this.renderFav({itm})}
+              keyExtractor={itm => itm.id}
+            />
+          ) : (
+            <View style={styles.noLogin}>
+              <Image source={require('../assets/images/box_satania.jpg')} resizeMode="contain" style={styles.noLoginImg} />
+              <Text style={styles.noLoginText}>Oh wee, there's no favorited manga</Text>
+            </View>
+          )
+        )}
       </View>
     )
   }
+
+  getFavorites = async () => {
+    if(this.props.user.isLogin) {
+      try {
+        await this.props.dispatch(getFavorite())      
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
 }
 
-export default FavouriteScreen
+const mapStateToProps = state => ({
+  user: state.user,
+  favorite: state.favorite
+})
+
+export default connect(mapStateToProps)(FavouriteScreen)

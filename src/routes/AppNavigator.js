@@ -19,9 +19,11 @@ import CreateWeebtoonScreen from "../screens/CreateWeebtoonScreen"
 import CreateChapterScreen from "../screens/CreateChapterScreen"
 import EditWeebtoonScreen from "../screens/EditWeebtoonScreen"
 import EditChapterScreen from "../screens/EditChapterScreen"
+import RegisterScreen from "../screens/RegisterScreen"
 
 const AuthStack = createStackNavigator({
-  Login: { screen: LoginScreen, navigationOptions: { header: null } }
+  Login: { screen: LoginScreen, navigationOptions: { header: null } },
+  Register: { screen: RegisterScreen, navigationOptions: { header: null } }
 })
 
 const AdminStack = createStackNavigator(
@@ -52,7 +54,7 @@ const AdminStack = createStackNavigator(
 const AppStack = createBottomTabNavigator(
   {
     ForYou: {screen: ForYouScreen, navigationOptions: {title: "For You"}},
-    Favourite: {screen: FavouriteScreen, navigationOptions: {title: "Favourite"}},
+    Favorite: {screen: FavouriteScreen, navigationOptions: {title: "Favorites"}},
     Profile: {screen: AdminStack, navigationOptions: {title: "My Profile"}}
   },
   {
@@ -61,7 +63,7 @@ const AppStack = createBottomTabNavigator(
         const { routeName } = navigation.state
         if (routeName === "ForYou") {
           iconName = "th-large"
-        } else if (routeName === "Favourite") {
+        } else if (routeName === "Favorite") {
           iconName = "heart"
         } else if (routeName === "Profile") {
           iconName = "user"
@@ -137,7 +139,7 @@ export default createAppContainer(
       Content: ContentStack
     },
     {
-      initialRouteName: "Auth"
+      initialRouteName: "Content"
     }
   )
 )
